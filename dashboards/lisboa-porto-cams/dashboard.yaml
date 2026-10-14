@@ -89,10 +89,8 @@ views:
         entity: input_boolean.lisboa_live_refresh
         state: 'on'
       card:
-        type: custom:youtube-video-card
-        video_id: Ac2s0sjqVjc
-        autoplay: true
-        mute: true
+        type: iframe
+        url: https://www.youtube.com/embed/live_stream?channel=UC0R-K3crhMX9jzswbmfIORw&autoplay=1&mute=1
         aspect_ratio: '16:9'
       grid_options:
         columns: full
@@ -102,10 +100,8 @@ views:
         entity: input_boolean.lisboa_live_refresh
         state: 'off'
       card:
-        type: custom:youtube-video-card
-        video_id: Ac2s0sjqVjc
-        autoplay: true
-        mute: true
+        type: iframe
+        url: https://www.youtube.com/embed/live_stream?channel=UC0R-K3crhMX9jzswbmfIORw&autoplay=1&mute=1
         aspect_ratio: '16:9'
       grid_options:
         columns: full
