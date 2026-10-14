@@ -19,7 +19,9 @@ All sources are public. No credentials or private cameras are included.
 
 ## Notes
 - The Cacilhas camera YouTube broadcast ended on 2026-09-01; swap the video ID when a new one exists.
-- The Lisbon Airport card is an `iframe` pointing at `youtube.com/embed/live_stream?channel=<channel id>` (AVIAÇÃO TV). That URL always resolves to the channel's current live, so the daily-changing video ID no longer needs updating. If the channel disables embedding, the card shows a YouTube error.
+- The Lisbon Airport live changes ID every day (AVIAÇÃO TV starts a new live daily). An `iframe` embed fails with YouTube error 153, and `youtube-video-card` cannot take a template. So the card is a `custom:button-card` (HACS) that draws the player iframe itself with `referrerpolicy="strict-origin-when-cross-origin"` (the fix for error 153) and the video ID from `sensor.lisbon_airport_live_id`.
+- Create that sensor with the **Scrape** integration (Settings → Devices & services → Add integration → Scrape): resource `https://www.youtube.com/@AVIA%C3%87%C3%83OTV/live`, headers `Accept-Language: en` and `Cookie: CONSENT=YES+1; SOCS=CAI`, then add a sensor named `Lisbon Airport live ID` with selector `link[rel=canonical]`, attribute `href` and value template `{{ value.split('v=')[-1] if 'v=' in value else 'unknown' }}`.
+- [`script-tv-aeroporto.yaml`](script-tv-aeroporto.yaml) is an optional script that plays the same live on a TV.
 - Video IDs and image URLs belong to their respective owners (YouTube channels, Windy, Lusoponte) and may change or go offline.
 
 ## License
