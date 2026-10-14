@@ -157,18 +157,48 @@ views:
           perform_action: input_boolean.toggle
           target:
             entity_id: input_boolean.lisboa_live_refresh
-    - type: markdown
-      text_only: true
-      entity_id:
-      - input_boolean.lisboa_live_refresh
-      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250856/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+    - type: custom:button-card
+      entity: input_boolean.lisboa_live_refresh
+      show_name: false
+      show_icon: false
+      show_state: false
+      tap_action:
+        action: none
+      styles:
+        card:
+        - padding: '0'
+        - overflow: hidden
+        grid:
+        - grid-template-areas: '"img"'
+        - grid-template-columns: 1fr
+        custom_fields:
+          img:
+          - width: 100%
+      custom_fields:
+        img: |-
+          [[[ return `<img src="https://imgproxy.windy.com/_/preview/plain/current/1537250856/original.jpg?t=${Date.now()}" data-base="https://imgproxy.windy.com/_/preview/plain/current/1537250856/original.jpg" style="width:100%;display:block" onload="const i=this;const b=i.dataset.base;const f=async()=>{try{const r=await fetch(i.src);const l=r.headers.get('last-modified');if(l){const d=new Date(l);const m=Math.max(0,Math.round((Date.now()-d)/60000));i.nextElementSibling.textContent='Captured '+d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Lisbon'})+' ('+m+' min ago)'}}catch(e){}};f();if(!i.dataset.t){i.dataset.t=setInterval(()=>{if(!i.isConnected){clearInterval(i.dataset.t);return}i.src=b+'?t='+Date.now()},60000)}"><div style="padding:4px 8px;font-size:12px;opacity:.7">&nbsp;</div>`; ]]]
       grid_options:
         columns: full
-    - type: markdown
-      text_only: true
-      entity_id:
-      - input_boolean.lisboa_live_refresh
-      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250912/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+    - type: custom:button-card
+      entity: input_boolean.lisboa_live_refresh
+      show_name: false
+      show_icon: false
+      show_state: false
+      tap_action:
+        action: none
+      styles:
+        card:
+        - padding: '0'
+        - overflow: hidden
+        grid:
+        - grid-template-areas: '"img"'
+        - grid-template-columns: 1fr
+        custom_fields:
+          img:
+          - width: 100%
+      custom_fields:
+        img: |-
+          [[[ return `<img src="https://imgproxy.windy.com/_/preview/plain/current/1537250912/original.jpg?t=${Date.now()}" data-base="https://imgproxy.windy.com/_/preview/plain/current/1537250912/original.jpg" style="width:100%;display:block" onload="const i=this;const b=i.dataset.base;const f=async()=>{try{const r=await fetch(i.src);const l=r.headers.get('last-modified');if(l){const d=new Date(l);const m=Math.max(0,Math.round((Date.now()-d)/60000));i.nextElementSibling.textContent='Captured '+d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Lisbon'})+' ('+m+' min ago)'}}catch(e){}};f();if(!i.dataset.t){i.dataset.t=setInterval(()=>{if(!i.isConnected){clearInterval(i.dataset.t);return}i.src=b+'?t='+Date.now()},60000)}"><div style="padding:4px 8px;font-size:12px;opacity:.7">&nbsp;</div>`; ]]]
       grid_options:
         columns: full
     - type: markdown
@@ -190,18 +220,48 @@ views:
     - type: heading
       heading: Vasco da Gama Bridge and Parque das Nações
       icon: mdi:road-variant
-    - type: markdown
-      text_only: true
-      entity_id:
-      - input_boolean.lisboa_live_refresh
-      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250742/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+    - type: custom:button-card
+      entity: input_boolean.lisboa_live_refresh
+      show_name: false
+      show_icon: false
+      show_state: false
+      tap_action:
+        action: none
+      styles:
+        card:
+        - padding: '0'
+        - overflow: hidden
+        grid:
+        - grid-template-areas: '"img"'
+        - grid-template-columns: 1fr
+        custom_fields:
+          img:
+          - width: 100%
+      custom_fields:
+        img: |-
+          [[[ return `<img src="https://imgproxy.windy.com/_/preview/plain/current/1537250742/original.jpg?t=${Date.now()}" data-base="https://imgproxy.windy.com/_/preview/plain/current/1537250742/original.jpg" style="width:100%;display:block" onload="const i=this;const b=i.dataset.base;const f=async()=>{try{const r=await fetch(i.src);const l=r.headers.get('last-modified');if(l){const d=new Date(l);const m=Math.max(0,Math.round((Date.now()-d)/60000));i.nextElementSibling.textContent='Captured '+d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Lisbon'})+' ('+m+' min ago)'}}catch(e){}};f();if(!i.dataset.t){i.dataset.t=setInterval(()=>{if(!i.isConnected){clearInterval(i.dataset.t);return}i.src=b+'?t='+Date.now()},60000)}"><div style="padding:4px 8px;font-size:12px;opacity:.7">&nbsp;</div>`; ]]]
       grid_options:
         columns: full
-    - type: markdown
-      text_only: true
-      entity_id:
-      - input_boolean.lisboa_live_refresh
-      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250801/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+    - type: custom:button-card
+      entity: input_boolean.lisboa_live_refresh
+      show_name: false
+      show_icon: false
+      show_state: false
+      tap_action:
+        action: none
+      styles:
+        card:
+        - padding: '0'
+        - overflow: hidden
+        grid:
+        - grid-template-areas: '"img"'
+        - grid-template-columns: 1fr
+        custom_fields:
+          img:
+          - width: 100%
+      custom_fields:
+        img: |-
+          [[[ return `<img src="https://imgproxy.windy.com/_/preview/plain/current/1537250801/original.jpg?t=${Date.now()}" data-base="https://imgproxy.windy.com/_/preview/plain/current/1537250801/original.jpg" style="width:100%;display:block" onload="const i=this;const b=i.dataset.base;const f=async()=>{try{const r=await fetch(i.src);const l=r.headers.get('last-modified');if(l){const d=new Date(l);const m=Math.max(0,Math.round((Date.now()-d)/60000));i.nextElementSibling.textContent='Captured '+d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Lisbon'})+' ('+m+' min ago)'}}catch(e){}};f();if(!i.dataset.t){i.dataset.t=setInterval(()=>{if(!i.isConnected){clearInterval(i.dataset.t);return}i.src=b+'?t='+Date.now()},60000)}"><div style="padding:4px 8px;font-size:12px;opacity:.7">&nbsp;</div>`; ]]]
       grid_options:
         columns: full
     - type: markdown

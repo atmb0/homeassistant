@@ -4,7 +4,7 @@ A Home Assistant dashboard with public live cameras and traffic images for Lisbo
 
 ## Views
 - **Live** – Lisbon live stream, Tagus River at Algés, Lisbon Airport (YouTube).
-- **Traffic** – 25 de Abril and Vasco da Gama bridges (Windy + Lusoponte still images, auto-refreshing).
+- **Traffic** – 25 de Abril and Vasco da Gama bridges (Windy + Lusoponte still images, auto-refreshing). The Windy images show a "Captured HH:MM (n min ago)" caption read from the image's `Last-Modified` header in the browser (needs `custom:button-card`); Lusoponte images have the time printed on them.
 - **Porto** – Porto live stream (YouTube) and links to traffic platforms.
 
 All sources are public. No credentials or private cameras are included.
