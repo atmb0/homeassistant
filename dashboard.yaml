@@ -1,0 +1,256 @@
+# Lisbon & Porto live cameras dashboard (Home Assistant, storage-mode raw config)
+views:
+- title: Live
+  path: live
+  type: sections
+  icon: mdi:video
+  max_columns: 2
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Lisbon live
+      icon: mdi:youtube
+      badges:
+      - type: button
+        icon: mdi:refresh
+        text: Refresh
+        tap_action:
+          action: perform-action
+          perform_action: input_boolean.toggle
+          target:
+            entity_id: input_boolean.lisboa_live_refresh
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'on'
+      card:
+        type: custom:youtube-video-card
+        video_id: tKIgNtEgLN0
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'off'
+      card:
+        type: custom:youtube-video-card
+        video_id: tKIgNtEgLN0
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+    - type: heading
+      heading: Tagus River - Algés (Port of Lisbon)
+      heading_style: subtitle
+      icon: mdi:ferry
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'on'
+      card:
+        type: custom:youtube-video-card
+        video_id: FE-JfjvXFEU
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'off'
+      card:
+        type: custom:youtube-video-card
+        video_id: FE-JfjvXFEU
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+    - type: markdown
+      content: 'Cacilhas camera: the YouTube broadcast ended on 2026-09-01 and the Port of Lisbon website still points to it. When a new broadcast is available, just swap the video ID.'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Lisbon Airport
+      icon: mdi:airplane
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'on'
+      card:
+        type: custom:youtube-video-card
+        video_id: Ac2s0sjqVjc
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'off'
+      card:
+        type: custom:youtube-video-card
+        video_id: Ac2s0sjqVjc
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+- title: Traffic
+  path: transito
+  type: sections
+  icon: mdi:car-multiple
+  max_columns: 2
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: 25 de Abril Bridge
+      icon: mdi:bridge
+      badges:
+      - type: button
+        icon: mdi:refresh
+        text: Refresh
+        tap_action:
+          action: perform-action
+          perform_action: input_boolean.toggle
+          target:
+            entity_id: input_boolean.lisboa_live_refresh
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250856/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250912/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://www.lusoponte.pt/assets/cam1_P25_00001.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://www.lusoponte.pt/assets/cam2_P25_00001.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+  - type: grid
+    cards:
+    - type: heading
+      heading: Vasco da Gama Bridge and Parque das Nações
+      icon: mdi:road-variant
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250742/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://imgproxy.windy.com/_/preview/plain/current/1537250801/original.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://www.lusoponte.pt/assets/cam1_PVG_00001.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+    - type: markdown
+      text_only: true
+      entity_id:
+      - input_boolean.lisboa_live_refresh
+      content: <img width="100%" src="https://www.lusoponte.pt/assets/cam2_PVG_00001.jpg?t={{ now().timestamp() | int }}&r={{ states('input_boolean.lisboa_live_refresh') }}">
+      grid_options:
+        columns: full
+    - type: markdown
+      content: Images from Windy, not video. They refresh automatically every minute and the Refresh button forces an update now. The camera itself only renews the image every few minutes. The Lusoponte
+        ones (Vasco da Gama, Parque das Nações) have the capture time printed on the image. The extra images for each bridge come from Lusoponte (lusoponte.pt).
+- title: Porto
+  path: porto
+  type: sections
+  icon: mdi:bridge
+  max_columns: 2
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Porto live
+      icon: mdi:youtube
+      badges:
+      - type: button
+        icon: mdi:refresh
+        text: Refresh
+        tap_action:
+          action: perform-action
+          perform_action: input_boolean.toggle
+          target:
+            entity_id: input_boolean.lisboa_live_refresh
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'on'
+      card:
+        type: custom:youtube-video-card
+        video_id: lfrjNVD10RU
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+    - type: conditional
+      conditions:
+      - condition: state
+        entity: input_boolean.lisboa_live_refresh
+        state: 'off'
+      card:
+        type: custom:youtube-video-card
+        video_id: lfrjNVD10RU
+        autoplay: true
+        mute: true
+        aspect_ratio: '16:9'
+      grid_options:
+        columns: full
+    - type: heading
+      heading: Ribeira and Vila Nova de Gaia (Luís I Bridge)
+      heading_style: subtitle
+      icon: mdi:bridge
+  - type: grid
+    cards:
+    - type: heading
+      heading: Traffic in Porto
+      icon: mdi:car-multiple
+    - type: markdown
+      content: 'I could not find public Porto traffic cameras (VCI, Arrábida, Freixo, Boavista) with a direct image: Windy has none, and the City Council and Ascendi only publish maps and alerts. When a
+        source with an image or YouTube URL appears, add it here using the same format as Lisbon.
+
+
+        [Porto City Council traffic platform](https://transito.cm-porto.pt/) · [Ascendi - traffic alerts](https://www.ascendi.pt/en/traffic-alerts/)'

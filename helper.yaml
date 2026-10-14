@@ -1,0 +1,8 @@
+# Helper used by the dashboard's Refresh button.
+# Toggling it swaps the conditional cards, which forces the stream/image to reload.
+# Or create it via UI: Settings > Devices & services > Helpers > Toggle,
+# name "lisboa_live_refresh" (entity_id input_boolean.lisboa_live_refresh).
+input_boolean:
+  lisboa_live_refresh:
+    name: Lisbon live refresh
+    icon: mdi:refresh
