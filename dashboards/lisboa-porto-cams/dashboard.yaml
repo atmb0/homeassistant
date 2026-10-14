@@ -81,6 +81,29 @@ views:
   - type: grid
     cards:
     - type: heading
+      heading: Lisbon air traffic
+      icon: mdi:radar
+    - type: vertical-stack
+      cards:
+      - type: custom:flightradar24-card
+        entity: sensor.flightradar24_current_in_area
+        title: Lisbon air traffic
+        map_style: osm
+        show_header: true
+        show_flights: true
+        show_tracks: true
+        interactive_map: true
+      - type: button
+        name: Open Flightradar24 (Lisbon)
+        icon: mdi:airplane-search
+        tap_action:
+          action: url
+          url_path: https://www.flightradar24.com/38.78,-9.14/10
+      grid_options:
+        columns: full
+  - type: grid
+    cards:
+    - type: heading
       heading: Lisbon Airport
       icon: mdi:airplane
     - type: conditional

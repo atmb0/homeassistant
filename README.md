@@ -6,7 +6,7 @@ Public, shareable Home Assistant configuration. Everything here is sanitized: no
 
 | Folder | Description |
 |---|---|
-| [`dashboards/lisboa-porto-cams`](dashboards/lisboa-porto-cams) | Public live cameras and traffic images for Lisbon and Porto |
+| [`dashboards/lisboa-porto-cams`](dashboards/lisboa-porto-cams) | Public live cameras and traffic images for Lisbon and Porto. The airport player follows the daily live via a Scrape sensor; Windy images show their capture time. Includes install steps, troubleshooting and a changelog |
 
 ## Layout
 
