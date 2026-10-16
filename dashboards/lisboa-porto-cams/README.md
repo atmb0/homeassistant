@@ -13,15 +13,15 @@ All sources are public. No credentials or private cameras are included.
 - `youtube-video-card` custom card (install via HACS; used for the Lisbon, Algés and Porto streams).
 - `button-card` custom card (HACS; used for the airport player and the Windy capture-time captions).
 - The [Flightradar24 integration](https://github.com/AlexandrErohin/home-assistant-flightradar24) (HACS), which ships `custom:flightradar24-card`, configured for Lisbon – see [Air-traffic map](#air-traffic-map).
-- The `input_boolean.lisboa_live_refresh` helper – see [`helper.yaml`](helper.yaml).
+- The `input_boolean.lisboa_live_refresh` helper – see [`helpers.yaml`](helpers.yaml).
 - `sensor.lisbon_airport_live_id`, created with the Scrape integration – see Notes below.
 
 ## Install
 1. Install the HACS cards: `youtube-video-card` and `button-card`.
-2. Create the helper (`helper.yaml`, or via the UI): `input_boolean.lisboa_live_refresh`.
+2. Create the helper (`helpers.yaml`, or via the UI): `input_boolean.lisboa_live_refresh`.
 3. Create the airport sensor (see [Airport live sensor](#airport-live-sensor)).
 4. Settings → Dashboards → Add dashboard (e.g. `lisboa-live`), open it, ⋮ → Raw configuration editor, and paste the contents of [`dashboard.yaml`](dashboard.yaml).
-5. Optional: create the TV script from [`script-tv-aeroporto.yaml`](script-tv-aeroporto.yaml) (adapt the `media_player` entity) and expose it to your voice assistant.
+5. Optional: create the TV script from [`scripts.yaml`](scripts.yaml) (adapt the `media_player` entity) and expose it to your voice assistant.
 
 ## Airport live sensor
 The AVIAÇÃO TV channel starts a new live with a new video ID every day, so a fixed ID goes stale. Its `/live` page always redirects to the current live, and the page's canonical link contains the ID.
@@ -66,7 +66,7 @@ The card is `custom:flightradar24-card` with `entity: sensor.flightradar24_curre
 - The Cacilhas camera YouTube broadcast ended on 2026-09-01; swap the video ID when a new one exists.
 - The Lisbon Airport live changes ID every day (AVIAÇÃO TV starts a new live daily). An `iframe` embed fails with YouTube error 153, and `youtube-video-card` cannot take a template. So the card is a `custom:button-card` (HACS) that draws the player iframe itself with `referrerpolicy="strict-origin-when-cross-origin"` (the fix for error 153) and the video ID from `sensor.lisbon_airport_live_id`. The YouTube controls and progress bar are hidden (`controls=0`) and the video starts muted.
 - Create that sensor with the **Scrape** integration (Settings → Devices & services → Add integration → Scrape): resource `https://www.youtube.com/@AVIA%C3%87%C3%83OTV/live`, headers `Accept-Language: en` and `Cookie: CONSENT=YES+1; SOCS=CAI`, then add a sensor named `Lisbon Airport live ID` with selector `link[rel=canonical]`, attribute `href` and value template `{{ value.split('v=')[-1] if 'v=' in value else 'unknown' }}`.
-- [`script-tv-aeroporto.yaml`](script-tv-aeroporto.yaml) is an optional script that plays the same live on a TV.
+- [`scripts.yaml`](scripts.yaml) is an optional script that plays the same live on a TV.
 - Video IDs and image URLs belong to their respective owners (YouTube channels, Windy, Lusoponte) and may change or go offline.
 
 ## Troubleshooting
