@@ -1,0 +1,76 @@
+# Optional: powers the "Daily collection log" on the Outlook & News view.
+# Prerequisites (create them in the UI first):
+#   1. Settings > Devices & services > Helpers > Add helper > To-do list > Local To-do,
+#      named "fuel_news_log" (entity todo.fuel_news_log).
+#   2. Add the Feedreader integration once per feed. Example URL (Google News, Portuguese):
+#      https://news.google.com/rss/search?q=combust%C3%ADveis+pr%C3%B3xima+semana&hl=pt-PT&gl=PT&ceid=PT:pt-PT
+#      Add `+site:eco.sapo.pt` (or another outlet) to the query for one feed per outlet.
+#      Each feed becomes an `event.*` entity; rename them to match the list below, or edit it.
+- alias: Fuel news and price log
+  description: Logs every new fuel-price headline into todo.fuel_news_log without duplicates, and adds a daily 08:00 snapshot of unleaded 95 prices within 10 km of home.
+  mode: queued
+  max: 10
+  triggers:
+    - trigger: state
+      id: news
+      entity_id:
+        - event.fuel_news_general
+        - event.fuel_news_expresso
+        - event.fuel_news_eco
+        - event.fuel_news_cnn_portugal
+        - event.fuel_news_jornal_de_negocios
+      not_from: [unavailable, unknown]
+    - trigger: time
+      id: daily
+      at: "08:00:00"
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: news
+            - condition: template
+              value_template: "{{ trigger.to_state is not none and trigger.to_state.attributes.title is defined and trigger.to_state.attributes.title }}"
+          sequence:
+            - variables:
+                title: "{{ trigger.to_state.attributes.title }}"
+                link: "{{ trigger.to_state.attributes.link }}"
+                stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
+            - action: todo.get_items
+              target:
+                entity_id: todo.fuel_news_log
+              response_variable: existing
+            - if:
+                - condition: template
+                  value_template: "{{ title not in (existing['todo.fuel_news_log']['items'] | map(attribute='summary') | list) }}"
+              then:
+                - action: todo.add_item
+                  target:
+                    entity_id: todo.fuel_news_log
+                  data:
+                    item: "{{ title }}"
+                    description: "Collected {{ stamp }} · {{ link }}"
+        - conditions:
+            - condition: trigger
+              id: daily
+          sequence:
+            - variables:
+                snapshot: >-
+                  {%- set ns = namespace(rows=[]) -%}
+                  {%- for s in states.sensor if s.attributes.GasStationId is defined and s.attributes.FuelName == 'Gasolina simples 95' and s.state | is_number -%}
+                  {%- set d = distance(s.attributes.Latitude, s.attributes.Longitude) -%}
+                  {%- if d is not none and d <= 10 -%}
+                  {%- set ns.rows = ns.rows + [{'p': s.state | float, 'n': s.attributes.Brand ~ ' ' ~ s.attributes.Name}] -%}
+                  {%- endif -%}
+                  {%- endfor -%}
+                  {%- set rows = ns.rows | sort(attribute='p') -%}
+                  {%- if rows -%}{{ {'min': rows[0].p, 'max': rows[-1].p, 'avg': (rows | map(attribute='p') | sum) / (rows | length), 'n': rows | length, 'best': rows[0].n} | tojson }}{%- else -%}{}{%- endif -%}
+            - if:
+                - condition: template
+                  value_template: "{{ snapshot.min is defined }}"
+              then:
+                - action: todo.add_item
+                  target:
+                    entity_id: todo.fuel_news_log
+                  data:
+                    item: "💶 Prices {{ now().strftime('%Y-%m-%d') }}: 95 min {{ '%.3f' % snapshot.min }} / avg {{ '%.3f' % snapshot.avg }} / max {{ '%.3f' % snapshot.max }} €/L"
+                    description: "Collected {{ now().strftime('%Y-%m-%d %H:%M') }} · {{ snapshot.n }} stations within 10 km · cheapest: {{ snapshot.best }}"

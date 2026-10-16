@@ -118,3 +118,72 @@ views:
               {% for r in rows -%}
               | {{ '%.1f' % r.d }} km | [{{ r.b }} – {{ r.n }}](https://www.google.com/maps/search/?api=1&query={{ r.la }},{{ r.lo }}) | {{ r.a[0] }}, {{ r.a[1] }} | **{{ '%.3f' % r.p }}** |
               {% endfor %}
+  - title: Outlook & News
+    path: outlook
+    icon: mdi:newspaper-variant-outline
+    type: sections
+    max_columns: 2
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: "Next week: will prices go up or down?"
+            icon: mdi:trending-up
+          - type: markdown
+            entity_id:
+              - event.fuel_news_general
+              - event.fuel_news_expresso
+              - event.fuel_news_eco
+              - event.fuel_news_cnn_portugal
+              - event.fuel_news_jornal_de_negocios
+            content: |-
+              Portuguese fuel prices change every **Monday**. The expected move is reported by the press on **Thursday/Friday** before, based on the week's Platts quotations and the EUR/USD rate.
+
+              Latest headlines on next week's move (links open the article, in Portuguese). The time shown is when Home Assistant collected each headline; feeds are checked hourly and every new headline is also saved in the log below.
+
+              {%- set feeds = ['event.fuel_news_general', 'event.fuel_news_expresso', 'event.fuel_news_eco', 'event.fuel_news_cnn_portugal', 'event.fuel_news_jornal_de_negocios'] %}
+              {% set ns = namespace(n=0, seen=[]) %}
+              {% for e in feeds %}
+              {% set t = state_attr(e, 'title') %}
+              {% if t and t not in ns.seen %}
+              {% set ns.n = ns.n + 1 %}
+              {% set ns.seen = ns.seen + [t] %}
+              - [{{ t }}]({{ state_attr(e, 'link') }}) — _collected {{ (states(e) | as_datetime | as_local).strftime('%d/%m/%Y %H:%M') }}_
+              {% endif %}
+              {% endfor %}
+              {% if ns.n == 0 %}
+              _No headlines received yet – the feeds refresh hourly._
+              {% endif %}
+      - type: grid
+        cards:
+          - type: heading
+            heading: Your nearby prices today
+            icon: mdi:gas-station
+          - type: markdown
+            content: |-
+              {%- set radius = 10 -%}
+              {%- set ns = namespace(rows=[]) -%}
+              {%- for s in states.sensor if s.attributes.GasStationId is defined and s.attributes.FuelName == 'Gasolina simples 95' and s.state | is_number -%}
+              {%- set d = distance(s.attributes.Latitude, s.attributes.Longitude) -%}
+              {%- if d is not none and d <= radius -%}
+              {%- set ns.rows = ns.rows + [s.state | float] -%}
+              {%- endif -%}
+              {%- endfor -%}
+              {%- if ns.rows -%}
+              Unleaded 95 within {{ radius }} km: **{{ '%.3f' % (ns.rows | min) }} – {{ '%.3f' % (ns.rows | max) }} €/L** (average {{ '%.3f' % ((ns.rows | sum) / (ns.rows | length)) }}).
+
+              If the press reports a drop on Monday, consider waiting; if it reports a rise, fill up before the weekend ends.
+              {%- endif -%}
+      - type: grid
+        cards:
+          - type: heading
+            heading: Daily collection log
+            icon: mdi:history
+          - type: markdown
+            content: Every new headline is saved here with its collection date/time, and each morning at **08:00** a snapshot of the unleaded 95 prices within 10 km is added (💶). Newest entries are added at the bottom.
+          - type: todo-list
+            entity: todo.fuel_news_log
+            title: Fuel news & price log
+            hide_completed: false
+            grid_options:
+              columns: full

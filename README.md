@@ -7,7 +7,7 @@ Public, shareable Home Assistant configuration. Everything here is sanitized: no
 | Dashboard | Description | Needs |
 |---|---|---|
 | [`lisboa-porto-cams`](dashboards/lisboa-porto-cams) | Public live cameras and traffic images for Lisbon and Porto. The airport player follows the daily live via a Scrape sensor; Windy images show their capture time. | HACS: `youtube-video-card`, `button-card`, Flightradar24 integration. Scrape integration. 1 helper, 1 optional script |
-| [`fuel-prices`](dashboards/fuel-prices) | Compares petrol prices (95 and 98) at the stations near your home, ranked by price and distance, using the DGEG data. Works for any place: it measures from your Home Assistant home location. | `precoscombustiveis` integration. No HACS cards |
+| [`fuel-prices`](dashboards/fuel-prices) | Compares petrol prices (95 and 98) at the stations near your home, ranked by price and distance, using the DGEG data. Works for any place: it measures from your Home Assistant home location. | `precoscombustiveis` integration (the Outlook & News view also uses Feedreader and a Local To-do list). No HACS cards |
 
 Each dashboard folder has its own README with requirements, install steps, troubleshooting and a changelog.
 
