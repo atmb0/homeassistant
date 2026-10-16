@@ -1,4 +1,4 @@
-# Optional: powers the "Daily collection log" on the Outlook & News view.
+# Optional: powers the "Daily collection log" on the News view.
 # Prerequisites (create them in the UI first):
 #   1. Settings > Devices & services > Helpers > Add helper > To-do list > Local To-do,
 #      named "fuel_news_log" (entity todo.fuel_news_log).
