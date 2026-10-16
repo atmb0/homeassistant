@@ -1,0 +1,120 @@
+# Fuel prices near home (Portugal, DGEG data via the precoscombustiveis integration).
+# Nothing here is tied to a place: the cards find every fuel-price sensor by itself and
+# measure the distance from the Home Assistant home location of whoever installs it.
+# To change the search radius, edit `set radius = 10` (km) in each markdown card.
+views:
+  - title: Nearby Stations
+    path: nearby
+    icon: mdi:gas-station
+    type: sections
+    max_columns: 2
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Summary
+            icon: mdi:gas-station
+          - type: markdown
+            content: |-
+              {%- set radius = 10 -%}
+              {%- set ns = namespace(rows=[]) -%}
+              {%- for s in states.sensor if s.attributes.GasStationId is defined and s.attributes.FuelName == 'Gasolina simples 95' and s.state | is_number -%}
+              {%- set d = distance(s.attributes.Latitude, s.attributes.Longitude) -%}
+              {%- if d is not none and d <= radius -%}
+              {%- set ns.rows = ns.rows + [{'n': s.attributes.Name, 'b': s.attributes.Brand, 'p': s.state | float, 'd': d}] -%}
+              {%- endif -%}
+              {%- endfor -%}
+              {%- set by_price = ns.rows | sort(attribute='p') -%}
+              {%- set by_dist = ns.rows | sort(attribute='d') -%}
+              {%- if by_price -%}
+              {%- set best = by_price[0] -%}
+              {%- set worst = by_price[-1] -%}
+              {%- set avg = (ns.rows | map(attribute='p') | sum) / (ns.rows | length) -%}
+              ### Unleaded 95 (within {{ radius }} km of home)
+
+              | | |
+              |:--|--:|
+              | **Cheapest** | **{{ '%.3f' % best.p }} €/L** |
+              | {{ best.b }} – {{ best.n }} | {{ '%.1f' % best.d }} km away |
+              | **Nearest** | {{ '%.3f' % by_dist[0].p }} €/L |
+              | {{ by_dist[0].b }} – {{ by_dist[0].n }} | {{ '%.1f' % by_dist[0].d }} km away |
+              | **Average of {{ ns.rows | length }} stations** | {{ '%.3f' % avg }} €/L |
+              | **Most expensive** | {{ '%.3f' % worst.p }} €/L |
+
+              💰 Filling a 50 L tank at the cheapest station instead of the most expensive saves **{{ '%.2f' % ((worst.p - best.p) * 50) }} €**.
+              {%- else -%}
+              No fuel price data available yet.
+              {%- endif -%}
+      - type: grid
+        cards:
+          - type: heading
+            heading: Unleaded 95 – cheapest first
+            icon: mdi:sort-numeric-ascending
+          - type: markdown
+            content: |-
+              {%- set radius = 10 -%}
+              {%- set ns = namespace(rows=[]) -%}
+              {%- for s in states.sensor if s.attributes.GasStationId is defined and s.attributes.FuelName == 'Gasolina simples 95' and s.state | is_number -%}
+              {%- set d = distance(s.attributes.Latitude, s.attributes.Longitude) -%}
+              {%- if d is not none and d <= radius -%}
+              {%- set ns.rows = ns.rows + [{'n': s.attributes.Name, 'b': s.attributes.Brand, 'p': s.state | float, 'd': d, 'u': s.attributes.LastPriceUpdate | string, 'la': s.attributes.Latitude, 'lo': s.attributes.Longitude}] -%}
+              {%- endif -%}
+              {%- endfor -%}
+              {%- set rows = ns.rows | sort(attribute='p') -%}
+              {%- if rows -%}
+              {%- set best = rows[0].p -%}
+              | # | Station | €/L | vs cheapest | Distance | Updated |
+              |:-:|:--|--:|--:|--:|:--|
+              {% for r in rows -%}
+              | {{ loop.index }} | [{{ r.b }} – {{ r.n }}](https://www.google.com/maps/search/?api=1&query={{ r.la }},{{ r.lo }}) | **{{ '%.3f' % r.p }}** | {% if (r.p - best) < 0.0005 %}✅ cheapest{% else %}+{{ '%.1f' % ((r.p - best) * 100) }} c{% endif %} | {{ '%.1f' % r.d }} km | {{ r.u[5:16] | replace('T', ' ') }} |
+              {% endfor %}
+              {%- else -%}
+              No data.
+              {%- endif -%}
+      - type: grid
+        cards:
+          - type: heading
+            heading: Unleaded 98 – cheapest first
+            icon: mdi:sort-numeric-ascending
+          - type: markdown
+            content: |-
+              {%- set radius = 10 -%}
+              {%- set ns = namespace(rows=[]) -%}
+              {%- for s in states.sensor if s.attributes.GasStationId is defined and s.attributes.FuelName is defined and '98' in s.attributes.FuelName and 'Gasolina' in s.attributes.FuelName and s.state | is_number -%}
+              {%- set d = distance(s.attributes.Latitude, s.attributes.Longitude) -%}
+              {%- if d is not none and d <= radius -%}
+              {%- set ns.rows = ns.rows + [{'n': s.attributes.Name, 'b': s.attributes.Brand, 'p': s.state | float, 'd': d, 'u': s.attributes.LastPriceUpdate | string, 'la': s.attributes.Latitude, 'lo': s.attributes.Longitude}] -%}
+              {%- endif -%}
+              {%- endfor -%}
+              {%- set rows = ns.rows | sort(attribute='p') -%}
+              {%- if rows -%}
+              {%- set best = rows[0].p -%}
+              | # | Station | €/L | vs cheapest | Distance | Updated |
+              |:-:|:--|--:|--:|--:|:--|
+              {% for r in rows -%}
+              | {{ loop.index }} | [{{ r.b }} – {{ r.n }}](https://www.google.com/maps/search/?api=1&query={{ r.la }},{{ r.lo }}) | **{{ '%.3f' % r.p }}** | {% if (r.p - best) < 0.0005 %}✅ cheapest{% else %}+{{ '%.1f' % ((r.p - best) * 100) }} c{% endif %} | {{ '%.1f' % r.d }} km | {{ r.u[5:16] | replace('T', ' ') }} |
+              {% endfor %}
+              {%- else -%}
+              No 98 prices available.
+              {%- endif -%}
+      - type: grid
+        cards:
+          - type: heading
+            heading: Closest stations first
+            icon: mdi:map-marker-distance
+          - type: markdown
+            content: |-
+              {%- set radius = 10 -%}
+              {%- set ns = namespace(rows=[]) -%}
+              {%- for s in states.sensor if s.attributes.GasStationId is defined and s.attributes.FuelName == 'Gasolina simples 95' and s.state | is_number -%}
+              {%- set d = distance(s.attributes.Latitude, s.attributes.Longitude) -%}
+              {%- if d is not none and d <= radius -%}
+              {%- set ns.rows = ns.rows + [{'n': s.attributes.Name, 'b': s.attributes.Brand, 'p': s.state | float, 'd': d, 'a': s.attributes.Address, 'la': s.attributes.Latitude, 'lo': s.attributes.Longitude}] -%}
+              {%- endif -%}
+              {%- endfor -%}
+              {%- set rows = ns.rows | sort(attribute='d') -%}
+              | Distance | Station | Address | 95 €/L |
+              |--:|:--|:--|--:|
+              {% for r in rows -%}
+              | {{ '%.1f' % r.d }} km | [{{ r.b }} – {{ r.n }}](https://www.google.com/maps/search/?api=1&query={{ r.la }},{{ r.lo }}) | {{ r.a[0] }}, {{ r.a[1] }} | **{{ '%.3f' % r.p }}** |
+              {% endfor %}
