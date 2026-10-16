@@ -5,6 +5,8 @@ A Home Assistant dashboard that compares petrol prices at the stations around yo
 ## Views
 - **Nearby Stations** – summary (cheapest, nearest, average, most expensive, and what a 50 L fill-up saves), Unleaded 95 ranked by price, Unleaded 98 ranked by price (only stations that sell it), and a list ordered by distance. Each station links to Google Maps.
 
+- **Outlook & News** – latest press headlines on next week's price move (Portuguese, with links), today's nearby price range, and a daily collection log. Needs the optional setup in [Outlook & News setup](#outlook--news-setup-optional).
+
 An optional price-history graph is in [Price history (optional)](#price-history-optional).
 
 ## Requirements
@@ -19,6 +21,14 @@ An optional price-history graph is in [Price history (optional)](#price-history-
 
 ## How it works
 Each station fuel is a sensor whose state is the price and whose attributes include `GasStationId`, `Name`, `Brand`, `Address`, `FuelName`, `LastPriceUpdate`, `Latitude` and `Longitude`. The cards loop over all sensors that have `GasStationId`, keep the ones with the right `FuelName` within the radius (`distance(Latitude, Longitude)` is measured from the Home Assistant home location), and sort them. Nothing in the dashboard file contains a place, a station list or home coordinates.
+
+## Outlook & News setup (optional)
+The first view works on its own. The second view needs three extra pieces, all in [`automations.yaml`](automations.yaml) (header comments explain each step):
+1. A Local To-do list named `fuel_news_log`.
+2. One Feedreader entry per news feed (Google News RSS works well). The entity IDs used in the dashboard are `event.fuel_news_{general,expresso,eco,cnn_portugal,jornal_de_negocios}`; rename yours or edit the lists in the dashboard and the automation.
+3. The automation, which saves each new headline once and adds a daily 08:00 price snapshot.
+
+Feedreader keeps only the latest item per feed, so the card shows one headline per outlet. The same headline from several outlets is shown once.
 
 ## Price history (optional)
 `history-graph` cannot take templates, so the entities must be listed by hand. Add a second view with your own sensors:
@@ -54,4 +64,5 @@ Each station fuel is a sensor whose state is the price and whose attributes incl
 | Station missing from the list | Its sensor has no price (state not a number) or its `FuelName` is not `Gasolina simples 95`. |
 
 ## Changelog
+- **2026-10-16** – Added the Outlook & News view (headlines, nearby price range, daily log) and `automations.yaml`.
 - **2026-10-16** – Initial shareable version (place-independent).
