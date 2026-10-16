@@ -118,7 +118,7 @@ views:
               {% for r in rows -%}
               | {{ '%.1f' % r.d }} km | [{{ r.b }} – {{ r.n }}](https://www.google.com/maps/search/?api=1&query={{ r.la }},{{ r.lo }}) | {{ r.a[0] }}, {{ r.a[1] }} | **{{ '%.3f' % r.p }}** |
               {% endfor %}
-  - title: Outlook & News
+  - title: News
     path: outlook
     icon: mdi:newspaper-variant-outline
     type: sections
